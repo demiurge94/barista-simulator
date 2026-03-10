@@ -18,7 +18,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Reset vertical velocity when grounded
+        // isGrounded is only reliable immediately after Move(), so check it once
+        // at the top using the state left by last frame's single Move call.
         if (_controller.isGrounded && _velocity.y < 0f)
             _velocity.y = -2f;
 
@@ -26,13 +27,14 @@ public class PlayerMovement : MonoBehaviour
         float z = Input.GetAxis("Vertical");
 
         float speed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
-        Vector3 move = transform.right * x + transform.forward * z;
-        _controller.Move(move * speed * Time.deltaTime);
+        Vector3 horizontalMove = (transform.right * x + transform.forward * z) * speed;
 
         if (Input.GetButtonDown("Jump") && _controller.isGrounded)
             _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
         _velocity.y += gravity * Time.deltaTime;
-        _controller.Move(_velocity * Time.deltaTime);
+
+        // Single Move() per frame so isGrounded is consistent next frame.
+        _controller.Move((horizontalMove + Vector3.up * _velocity.y) * Time.deltaTime);
     }
 }
