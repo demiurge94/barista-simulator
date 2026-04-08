@@ -321,7 +321,7 @@ PrefabInstance:
     - target: {fileID: 2380718651202138832, guid: 700257a5dd626154eada4f0933fe5ab2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 655da4732c93b1740980c9b44c884631, type: 2}
+      objectReference: {fileID: 2100000, guid: 1e4ba536f6f8fa94eb89b34c3ca15c0c, type: 2}
     - target: {fileID: 8616184511030011274, guid: 700257a5dd626154eada4f0933fe5ab2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -456,6 +456,7 @@ GameObject:
   - component: {fileID: 336049959236948575}
   - component: {fileID: 1898224176}
   - component: {fileID: 4146737463489092657}
+  - component: {fileID: 4146737463489092658}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -479,6 +480,84 @@ MonoBehaviour:
   sprintSpeed: 8
   jumpHeight: 1.2
   gravity: -9.81
+--- !u!114 &4146737463489092658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4146737463489092656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: a5e95964fb79ae34da9f09050d31120d, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4146737463489092657}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5870ac95-5f06-49ad-9ac7-54d2387274d3
+    m_ActionName: 'InputActions/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4146737463489092657}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 013adbea-45a3-4936-b667-16c85569e767
+    m_ActionName: 'InputActions/Jump[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4146737463489092657}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnSprint
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d4c94957-ace5-4c87-94c6-bbc033413fe0
+    m_ActionName: 'InputActions/Sprint[/Keyboard/shift]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: EveryInputScheme
+  m_DefaultActionMap: InputActions
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!20 &7920768010683043032
 Camera:
   m_ObjectHideFlags: 0
@@ -586,7 +665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f78fb26a0d9313049a6eaa3e3695be25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraLook
-  mouseSensitivity: 200
+  mouseSensitivity: 400
   playerBody: {fileID: 336049959236948575}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

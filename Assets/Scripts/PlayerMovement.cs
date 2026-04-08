@@ -1,40 +1,78 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 4f;
-    [SerializeField] float sprintSpeed = 8f;
-    [SerializeField] float jumpHeight = 1.2f;
-    [SerializeField] float gravity = -9.81f;
+    public float walkSpeed = 4f;
+    public float sprintSpeed = 8f;
+    public float jumpHeight = 1.2f;
+    public float gravity = -9.81f;
 
-    CharacterController _controller;
-    Vector3 _velocity;
+    public Transform cameraTransform;
+
+    CharacterController controller;
+    Vector3 velocity;
+    Vector3 movement;
+    Vector2 movementInput;
+
+    float speed = 4.0f;
+
+
+    Vector3 cameraForward;
+    Vector3 cameraRight;
+    Vector3 direction;
 
     void Start()
     {
-        _controller = GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        // isGrounded is only reliable immediately after Move(), so check it once
-        // at the top using the state left by last frame's single Move call.
-        if (_controller.isGrounded && _velocity.y < 0f)
-            _velocity.y = -2f;
+        cameraForward = cameraTransform.forward;
+        cameraForward.y = 0.0f;
+        cameraForward.Normalize();
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        cameraRight = cameraTransform.right;
+        cameraRight.y = 0.0f;
+        cameraRight.Normalize();
 
-        float speed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
-        Vector3 horizontalMove = (transform.right * x + transform.forward * z) * speed;
+        direction = (cameraForward * movementInput.y + cameraRight * movementInput.x).normalized;
 
-        if (Input.GetButtonDown("Jump") && _controller.isGrounded)
-            _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        if (controller.isGrounded && velocity.y < 0f)
+        {
+            velocity.y = -2f;
+        }
 
-        _velocity.y += gravity * Time.deltaTime;
+        velocity.y += gravity * Time.deltaTime;
 
-        // Single Move() per frame so isGrounded is consistent next frame.
-        _controller.Move((horizontalMove + Vector3.up * _velocity.y) * Time.deltaTime);
+        controller.Move(((direction * speed) + (Vector3.up * velocity.y)) * Time.deltaTime);
+    }
+
+    public void OnMovement(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if(context.performed && controller.isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            speed = sprintSpeed;
+        }
+
+        if(context.canceled)
+        {
+            speed = walkSpeed;
+        }
     }
 }
