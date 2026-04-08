@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -48,6 +49,12 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(((direction * speed) + (Vector3.up * velocity.y)) * Time.deltaTime);
+
+
+        if(Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     public void OnMovement(InputAction.CallbackContext context)
