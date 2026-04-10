@@ -17,7 +17,10 @@ public class InventorySelector : MonoBehaviour
     {
         slots = new Image[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
+        {
             slots[i] = transform.GetChild(i).GetComponent<Image>();
+            slots[i].color = normalColor;
+        }
 
         Select(0, false);
     }
