@@ -16,7 +16,7 @@ public class FabricatorMenu : MonoBehaviour
     public DrinkRecipe[] recipes;
 
     [Header("Colors")]
-    public Color panelColor      = new Color(0.05f, 0.05f, 0.12f, 0.85f);
+    public Color panelColor      = new Color(0f, 0f, 0f, 1f);
     public Color categoryColor   = new Color(0.12f, 0.18f, 0.28f, 1f);
     public Color itemColor       = new Color(0.08f, 0.14f, 0.22f, 1f);
     public Color hoverColor      = new Color(0.18f, 0.30f, 0.45f, 1f);
@@ -116,7 +116,7 @@ public class FabricatorMenu : MonoBehaviour
         _currentCategory = null;
         _selectedDrink = null;
         ClearList();
-        _titleText.text = "FABRICATOR";
+        _titleText.text = "Coffee Machine";
         ClearDetailPanel();
 
         var categories = recipes.Select(r => r.category).Distinct().OrderBy(c => c);
@@ -246,7 +246,7 @@ public class FabricatorMenu : MonoBehaviour
         // Title
         _titleText = CreateText("Title", panel.transform,
             new Vector2(0f, 0.88f), new Vector2(1f, 1f),
-            "FABRICATOR", 28, TextAlignmentOptions.Center);
+            "Coffee Machine", 40, TextAlignmentOptions.Center);
         _titleText.color = accentColor;
 
         // Divider line under title
