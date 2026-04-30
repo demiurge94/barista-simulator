@@ -15,6 +15,10 @@ public class FabricatorMenu : MonoBehaviour
     [Header("Recipes")]
     public DrinkRecipe[] recipes;
 
+    [Header("Sweetness")]
+    [Tooltip("Drag the Sugar IngredientData asset here. Used by the sweetness selector.")]
+    public IngredientData sugarIngredient;
+
     [Header("Colors")]
     public Color panelColor      = new Color(0f, 0f, 0f, 1f);
     public Color categoryColor   = new Color(0.12f, 0.18f, 0.28f, 1f);
@@ -39,11 +43,14 @@ public class FabricatorMenu : MonoBehaviour
     GameObject _craftingBar;
     Image _craftingFill;
     TMP_Text _craftingLabel;
+    GameObject _sweetnessRow;
+    Button[] _sweetnessButtons;
 
     DrinkCategory? _currentCategory;
     DrinkRecipe _selectedDrink;
     bool _isCrafting;
     bool _isOpen;
+    int _sweetness;
 
     // Player refs (found automatically)
     MonoBehaviour _cameraLook;
@@ -87,6 +94,7 @@ public class FabricatorMenu : MonoBehaviour
         if (_playerMovement) _playerMovement.enabled = false;
         if (_playerInteract) _playerInteract.enabled = false;
 
+        _sweetness = 0;
         ShowCategories();
     }
 
@@ -173,20 +181,60 @@ public class FabricatorMenu : MonoBehaviour
             {
                 if (ing.ingredient == null) continue;
 
-                // TODO: Check player inventory for actual ingredient availability
-                // For now, always show as available (green)
-                bool hasIngredient = true;
+                bool hasIngredient = PlayerInventory.Instance != null
+                    && PlayerInventory.Instance.Has(ing.ingredient, ing.quantity);
                 CreateIngredientRow(ing, hasIngredient);
             }
         }
 
-        // Show craft button
+        // Sweetness sugar row, if a level is selected
+        if (_sweetness > 0 && sugarIngredient != null)
+        {
+            bool hasSugar = PlayerInventory.Instance != null
+                && PlayerInventory.Instance.Has(sugarIngredient, _sweetness);
+            CreateIngredientRow(new RecipeIngredient { ingredient = sugarIngredient, quantity = _sweetness }, hasSugar);
+        }
+
+        // Show sweetness selector and craft button
+        _sweetnessRow.SetActive(true);
+        RefreshSweetnessButtons();
         _craftButton.SetActive(true);
 
-        // TODO: Disable craft button if player doesn't have all ingredients
-        // For now always enabled since we hardcode hasIngredient = true
-        bool canCraft = true;
+        bool canCraft = HasAllIngredients(drink);
         SetCraftButtonInteractable(canCraft);
+    }
+
+    bool HasAllIngredients(DrinkRecipe drink)
+    {
+        if (PlayerInventory.Instance == null) return true; // graceful in editor without an inventory
+        if (drink.ingredients != null)
+        {
+            foreach (var ing in drink.ingredients)
+            {
+                if (ing.ingredient == null) continue;
+                if (!PlayerInventory.Instance.Has(ing.ingredient, ing.quantity)) return false;
+            }
+        }
+        if (_sweetness > 0 && sugarIngredient != null
+            && !PlayerInventory.Instance.Has(sugarIngredient, _sweetness)) return false;
+        return true;
+    }
+
+    void SetSweetness(int level)
+    {
+        _sweetness = Mathf.Clamp(level, 0, 3);
+        RefreshSweetnessButtons();
+        if (_selectedDrink != null) ShowDrinkDetails(_selectedDrink);
+    }
+
+    void RefreshSweetnessButtons()
+    {
+        if (_sweetnessButtons == null) return;
+        for (int i = 0; i < _sweetnessButtons.Length; i++)
+        {
+            var img = _sweetnessButtons[i].GetComponent<Image>();
+            if (img != null) img.color = (i == _sweetness) ? accentColor : itemColor;
+        }
     }
 
     void OnCraftPressed()
@@ -218,11 +266,21 @@ public class FabricatorMenu : MonoBehaviour
         OnDrinkCrafted?.Invoke(drink);
         Debug.Log($"[Fabricator] Crafted: {drink.drinkName}");
 
+        if (PlayerInventory.Instance != null)
+            PlayerInventory.Instance.Consume(drink.ingredients);
+
+        if (PlayerInventory.Instance != null && _sweetness > 0 && sugarIngredient != null)
+            PlayerInventory.Instance.Consume(new[] {
+                new RecipeIngredient { ingredient = sugarIngredient, quantity = _sweetness }
+            });
+
         yield return new WaitForSeconds(0.6f);
         _craftingBar.SetActive(false);
 
-        // Go back to category view
-        if (_isOpen && _currentCategory.HasValue)
+        // Re-render details so craft button reflects new inventory state.
+        if (_isOpen && _selectedDrink != null)
+            ShowDrinkDetails(_selectedDrink);
+        else if (_isOpen && _currentCategory.HasValue)
             ShowCategory(_currentCategory.Value);
     }
 
@@ -297,9 +355,9 @@ public class FabricatorMenu : MonoBehaviour
             "<b>Ingredients:</b>", 16, TextAlignmentOptions.BottomLeft);
         ingHeader.color = new Color(0.7f, 0.75f, 0.8f);
 
-        // Ingredient list area (vertical layout)
+        // Ingredient list area (vertical layout) — shrunk to make room for sweetness row.
         var ingArea = CreatePanel("IngArea", _descPanel.transform,
-            new Vector2(0.05f, 0.15f), new Vector2(0.95f, 0.48f), Color.clear);
+            new Vector2(0.05f, 0.22f), new Vector2(0.95f, 0.48f), Color.clear);
 
         var ingListGO = new GameObject("IngList", typeof(RectTransform), typeof(VerticalLayoutGroup),
             typeof(ContentSizeFitter));
@@ -322,6 +380,32 @@ public class FabricatorMenu : MonoBehaviour
         ingCsf.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         _ingredientListParent = ingListGO.transform;
+
+        // ── Sweetness selector (between ingredients and craft button) ──
+        _sweetnessRow = CreatePanel("SweetnessRow", _descPanel.transform,
+            new Vector2(0.05f, 0.13f), new Vector2(0.95f, 0.21f), Color.clear);
+
+        var sweetLabel = CreateText("SweetLabel", _sweetnessRow.transform,
+            new Vector2(0f, 0f), new Vector2(0.3f, 1f),
+            "Sugar:", 14, TextAlignmentOptions.MidlineLeft);
+        sweetLabel.color = new Color(0.7f, 0.75f, 0.8f);
+
+        _sweetnessButtons = new Button[4];
+        for (int i = 0; i < 4; i++)
+        {
+            int level = i; // capture
+            float x0 = 0.32f + i * 0.17f;
+            float x1 = x0 + 0.15f;
+            var btnGO = CreatePanel($"Sweet{level}", _sweetnessRow.transform,
+                new Vector2(x0, 0.1f), new Vector2(x1, 0.9f), itemColor);
+            var btn = btnGO.AddComponent<Button>();
+            btn.onClick.AddListener(() => SetSweetness(level));
+            var t = CreateText("L", btnGO.transform, Vector2.zero, Vector2.one,
+                level.ToString(), 16, TextAlignmentOptions.Center);
+            t.color = textColor;
+            _sweetnessButtons[i] = btn;
+        }
+        _sweetnessRow.SetActive(false);
 
         // ── Craft button (bottom of detail panel) ──
         _craftButton = CreatePanel("CraftBtn", _descPanel.transform,
@@ -393,6 +477,7 @@ public class FabricatorMenu : MonoBehaviour
         _descText.text = "Select a drink to see details.";
         ClearIngredientList();
         _craftButton.SetActive(false);
+        if (_sweetnessRow != null) _sweetnessRow.SetActive(false);
     }
 
     void CreateIngredientRow(RecipeIngredient ing, bool playerHasIt)
