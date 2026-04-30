@@ -22,5 +22,8 @@ public class DrinkRecipe : ScriptableObject
     public float craftTime = 3f;
     public float price = 5.50f;
 
+    [Tooltip("Optional: when set, crafting this drink also adds 1 of this ingredient to inventory. Used by Espresso → Latte/Cortado chain.")]
+    public IngredientData output;
+
     [TextArea] public string description;
 }

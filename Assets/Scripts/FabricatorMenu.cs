@@ -274,6 +274,9 @@ public class FabricatorMenu : MonoBehaviour
                 new RecipeIngredient { ingredient = sugarIngredient, quantity = _sweetness }
             });
 
+        if (PlayerInventory.Instance != null && drink.output != null)
+            PlayerInventory.Instance.Add(drink.output, 1);
+
         yield return new WaitForSeconds(0.6f);
         _craftingBar.SetActive(false);
 
