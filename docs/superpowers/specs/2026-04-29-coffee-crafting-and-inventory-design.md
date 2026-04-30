@@ -61,8 +61,8 @@ Naming: new IngredientData assets get `_Placeholder` suffix until Alex's icon wo
 
 - `Assets/Ingredients/CoffeeBeans_Placeholder.asset`
 - `Assets/Ingredients/Espresso_Placeholder.asset` (consumed by Cortado/Latte; produced by Espresso recipe as output)
-- `Assets/Recipes/Hot Drinks/Espresso.asset`
-- `Assets/Recipes/Hot Drinks/Latte.asset`
+- `Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset`
+- `Assets/Recipes/Hot Drinks/Latte_Placeholder.asset`
 - Update `Assets/Recipes/Hot Drinks/Coffee.asset` (fill ingredients with 2× CoffeeBeans)
 - Update `Assets/Recipes/Hot Drinks/Cortado.asset` (fill ingredients with 1× Espresso)
 

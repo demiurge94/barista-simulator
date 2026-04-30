@@ -17,8 +17,8 @@
 **Create**
 - `Assets/Ingredients/CoffeeBeans_Placeholder.asset` (+ `.meta`)
 - `Assets/Ingredients/Espresso_Placeholder.asset` (+ `.meta`)
-- `Assets/Recipes/Hot Drinks/Espresso.asset` (+ `.meta`)
-- `Assets/Recipes/Hot Drinks/Latte.asset` (+ `.meta`)
+- `Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset` (+ `.meta`)
+- `Assets/Recipes/Hot Drinks/Latte_Placeholder.asset` (+ `.meta`)
 - `Assets/Scripts/PlayerInventory.cs` (+ `.meta`)
 - `Assets/Scripts/IngredientSlot.cs` (+ `.meta`)
 
@@ -169,17 +169,17 @@ Read Assets/Recipes/Hot Drinks/Cortado.asset
 ```
 Expected: `ingredients` references Espresso GUID with `quantity: 1`.
 
-## Task 1.5: Create `Espresso.asset` DrinkRecipe
+## Task 1.5: Create `Espresso_Placeholder.asset` DrinkRecipe
 
 **Files:**
-- Create: `Assets/Recipes/Hot Drinks/Espresso.asset`
+- Create: `Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset`
 
 - [ ] **Step 1: Create the recipe**
 
 ```
 mcp__unity-mcp__manage_scriptable_object
   action="create"
-  path="Assets/Recipes/Hot Drinks/Espresso.asset"
+  path="Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset"
   type="DrinkRecipe"
   values={
     "drinkName": "Espresso",
@@ -198,21 +198,21 @@ Note: do NOT set `output` here — the field doesn't exist on `DrinkRecipe` yet.
 - [ ] **Step 2: Verify**
 
 ```
-Read Assets/Recipes/Hot Drinks/Espresso.asset
+Read Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset
 ```
 Expected: `drinkName: Espresso`, ingredients references CoffeeBeans GUID.
 
-## Task 1.6: Create `Latte.asset` DrinkRecipe
+## Task 1.6: Create `Latte_Placeholder.asset` DrinkRecipe
 
 **Files:**
-- Create: `Assets/Recipes/Hot Drinks/Latte.asset`
+- Create: `Assets/Recipes/Hot Drinks/Latte_Placeholder.asset`
 
 - [ ] **Step 1: Create the recipe**
 
 ```
 mcp__unity-mcp__manage_scriptable_object
   action="create"
-  path="Assets/Recipes/Hot Drinks/Latte.asset"
+  path="Assets/Recipes/Hot Drinks/Latte_Placeholder.asset"
   type="DrinkRecipe"
   values={
     "drinkName": "Latte",
@@ -229,7 +229,7 @@ mcp__unity-mcp__manage_scriptable_object
 - [ ] **Step 2: Verify**
 
 ```
-Read Assets/Recipes/Hot Drinks/Latte.asset
+Read Assets/Recipes/Hot Drinks/Latte_Placeholder.asset
 ```
 
 ## Task 1.7: Attach `PlayerInteract` to Player GameObject
@@ -402,8 +402,8 @@ mcp__unity-mcp__manage_components
   value=[
     {"assetPath": "Assets/Recipes/Hot Drinks/Coffee.asset"},
     {"assetPath": "Assets/Recipes/Hot Drinks/Cortado.asset"},
-    {"assetPath": "Assets/Recipes/Hot Drinks/Espresso.asset"},
-    {"assetPath": "Assets/Recipes/Hot Drinks/Latte.asset"}
+    {"assetPath": "Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset"},
+    {"assetPath": "Assets/Recipes/Hot Drinks/Latte_Placeholder.asset"}
   ]
 ```
 
@@ -459,10 +459,10 @@ git add Assets/Ingredients/CoffeeBeans_Placeholder.asset \
         Assets/Ingredients/Espresso_Placeholder.asset.meta \
         "Assets/Recipes/Hot Drinks/Coffee.asset" \
         "Assets/Recipes/Hot Drinks/Cortado.asset" \
-        "Assets/Recipes/Hot Drinks/Espresso.asset" \
-        "Assets/Recipes/Hot Drinks/Espresso.asset.meta" \
-        "Assets/Recipes/Hot Drinks/Latte.asset" \
-        "Assets/Recipes/Hot Drinks/Latte.asset.meta" \
+        "Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset" \
+        "Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset.meta" \
+        "Assets/Recipes/Hot Drinks/Latte_Placeholder.asset" \
+        "Assets/Recipes/Hot Drinks/Latte_Placeholder.asset.meta" \
         Assets/Scenes/Level.unity
 git commit -m "feat(crafting): phase 1 — coffee machine interaction + 4 recipes
 
@@ -1166,21 +1166,21 @@ Expected: no errors. (Adding a serialized field is non-breaking; existing recipe
 ## Task 3.2: Set Espresso recipe's `output` to the Espresso ingredient
 
 **Files:**
-- Modify: `Assets/Recipes/Hot Drinks/Espresso.asset`
+- Modify: `Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset`
 
 - [ ] **Step 1: Set the output field**
 
 ```
 mcp__unity-mcp__manage_scriptable_object
   action="modify"
-  path="Assets/Recipes/Hot Drinks/Espresso.asset"
+  path="Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset"
   values={"output": {"guid": "<ESPRESSO_GUID>", "type": 2}}
 ```
 
 - [ ] **Step 2: Verify**
 
 ```
-Read Assets/Recipes/Hot Drinks/Espresso.asset
+Read Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset
 ```
 Expected: `output: {fileID: 11400000, guid: <ESPRESSO_GUID>, type: 2}`.
 
@@ -1252,7 +1252,7 @@ mcp__unity-mcp__manage_editor action="stop"
 cd /Users/erick/barista-simulator
 git add Assets/Scripts/DrinkRecipe.cs \
         Assets/Scripts/FabricatorMenu.cs \
-        "Assets/Recipes/Hot Drinks/Espresso.asset"
+        "Assets/Recipes/Hot Drinks/Espresso_Placeholder.asset"
 git commit -m "feat(crafting): phase 3 — espresso-as-ingredient chain
 
 DrinkRecipe.output: when set, crafting that recipe adds 1 of the
