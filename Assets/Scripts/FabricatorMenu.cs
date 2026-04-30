@@ -12,9 +12,6 @@ using TMPro;
 /// </summary>
 public class FabricatorMenu : MonoBehaviour
 {
-    [Header("Recipes")]
-    public DrinkRecipe[] recipes;
-
     [Header("Sweetness")]
     [Tooltip("Drag the Sugar IngredientData asset here. Used by the sweetness selector.")]
     public IngredientData sugarIngredient;
@@ -59,6 +56,9 @@ public class FabricatorMenu : MonoBehaviour
 
     public bool IsOpen => _isOpen;
 
+    DrinkRecipe[] _currentRecipes;
+    string _currentTitle = "Coffee Machine";
+
     public event Action<DrinkRecipe, int> OnDrinkCrafted;
 
     void Awake()
@@ -78,9 +78,11 @@ public class FabricatorMenu : MonoBehaviour
 
     // ───────────────────────────── Public API ─────────────────────────────
 
-    public void Open()
+    public void Open(DrinkRecipe[] stationRecipes, string title)
     {
         if (_isOpen) return;
+        _currentRecipes = stationRecipes ?? new DrinkRecipe[0];
+        _currentTitle = title;
         _isOpen = true;
         _root.SetActive(true);
 
@@ -124,10 +126,10 @@ public class FabricatorMenu : MonoBehaviour
         _currentCategory = null;
         _selectedDrink = null;
         ClearList();
-        _titleText.text = "Coffee Machine";
+        _titleText.text = _currentTitle;
         ClearDetailPanel();
 
-        var categories = recipes.Select(r => r.category).Distinct().OrderBy(c => c);
+        var categories = _currentRecipes.Select(r => r.category).Distinct().OrderBy(c => c);
 
         foreach (DrinkCategory cat in categories)
         {
@@ -148,7 +150,7 @@ public class FabricatorMenu : MonoBehaviour
         CreateButton("← BACK", categoryColor, ShowCategories, false);
 
         // Drink items in this category
-        var drinks = recipes.Where(r => r.category == category);
+        var drinks = _currentRecipes.Where(r => r.category == category);
         foreach (var drink in drinks)
         {
             var d = drink; // capture for closure

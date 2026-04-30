@@ -1039,11 +1039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761420bbab72348c4b8e96095475303c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FabricatorMenu
-  recipes:
-  - {fileID: 11400000, guid: de18e6f4b54984c5ea46fbfee4d6cf7f, type: 2}
-  - {fileID: 11400000, guid: ec738ec95e1304846acf5dd6d81b7a08, type: 2}
-  - {fileID: 11400000, guid: 896a8814fa3b048d3992c3553d6fccdb, type: 2}
-  - {fileID: 11400000, guid: 54e67f6f774484e8db61e98b4e265dcd, type: 2}
   sugarIngredient: {fileID: 11400000, guid: fd6551c24826d422aa0dc899074349c1, type: 2}
   panelColor: {r: 0.05, g: 0.05, b: 0.12, a: 0.95}
   categoryColor: {r: 0.12, g: 0.18, b: 0.28, a: 1}
@@ -4504,6 +4499,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CraftingStation
   fabricatorMenu: {fileID: 142491285}
+  recipes:
+  - {fileID: 11400000, guid: de18e6f4b54984c5ea46fbfee4d6cf7f, type: 2}
+  - {fileID: 11400000, guid: ec738ec95e1304846acf5dd6d81b7a08, type: 2}
+  - {fileID: 11400000, guid: 896a8814fa3b048d3992c3553d6fccdb, type: 2}
+  - {fileID: 11400000, guid: 54e67f6f774484e8db61e98b4e265dcd, type: 2}
+  stationTitle: Coffee Machine
 --- !u!65 &1399279782
 BoxCollider:
   m_ObjectHideFlags: 0
