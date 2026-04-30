@@ -59,7 +59,7 @@ public class FabricatorMenu : MonoBehaviour
 
     public bool IsOpen => _isOpen;
 
-    public event Action<DrinkRecipe> OnDrinkCrafted;
+    public event Action<DrinkRecipe, int> OnDrinkCrafted;
 
     void Awake()
     {
@@ -263,7 +263,7 @@ public class FabricatorMenu : MonoBehaviour
         _craftingLabel.text = $"{drink.drinkName} ready!";
         _isCrafting = false;
 
-        OnDrinkCrafted?.Invoke(drink);
+        OnDrinkCrafted?.Invoke(drink, _sweetness);
         Debug.Log($"[Fabricator] Crafted: {drink.drinkName}");
 
         if (PlayerInventory.Instance != null)
