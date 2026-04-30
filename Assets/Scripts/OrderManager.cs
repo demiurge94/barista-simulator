@@ -61,8 +61,9 @@ public class OrderManager : MonoBehaviour
             return;
         }
         var recipe = availableRecipes[Random.Range(0, availableRecipes.Length)];
-        // Food category arrives in Phase 3; until then everything is Hot/Cold and gets random sweetness.
-        int sweetness = Random.Range(0, 4); // 0..3
+        int sweetness = (recipe.category == ItemCategory.Food)
+            ? 0
+            : Random.Range(0, 4); // 0..3
         AddOrder(recipe, sweetness);
     }
 

@@ -43,7 +43,7 @@ public class FabricatorMenu : MonoBehaviour
     GameObject _sweetnessRow;
     Button[] _sweetnessButtons;
 
-    DrinkCategory? _currentCategory;
+    ItemCategory? _currentCategory;
     DrinkRecipe _selectedDrink;
     bool _isCrafting;
     bool _isOpen;
@@ -131,14 +131,14 @@ public class FabricatorMenu : MonoBehaviour
 
         var categories = _currentRecipes.Select(r => r.category).Distinct().OrderBy(c => c);
 
-        foreach (DrinkCategory cat in categories)
+        foreach (ItemCategory cat in categories)
         {
             var c = cat;
             CreateButton(c.ToString(), categoryColor, () => ShowCategory(c), true);
         }
     }
 
-    void ShowCategory(DrinkCategory category)
+    void ShowCategory(ItemCategory category)
     {
         _currentCategory = category;
         _selectedDrink = null;
@@ -197,9 +197,17 @@ public class FabricatorMenu : MonoBehaviour
             CreateIngredientRow(new RecipeIngredient { ingredient = sugarIngredient, quantity = _sweetness }, hasSugar);
         }
 
-        // Show sweetness selector and craft button
-        _sweetnessRow.SetActive(true);
-        RefreshSweetnessButtons();
+        // Show sweetness selector for non-food, hide for food.
+        if (drink.category == ItemCategory.Food)
+        {
+            _sweetness = 0;
+            _sweetnessRow.SetActive(false);
+        }
+        else
+        {
+            _sweetnessRow.SetActive(true);
+            RefreshSweetnessButtons();
+        }
         _craftButton.SetActive(true);
 
         bool canCraft = HasAllIngredients(drink);

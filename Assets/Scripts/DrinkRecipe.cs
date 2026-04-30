@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public enum DrinkCategory
+public enum ItemCategory
 {
     Hot,
-    Cold
+    Cold,
+    Food
 }
 
 [System.Serializable]
@@ -17,7 +18,7 @@ public class RecipeIngredient
 public class DrinkRecipe : ScriptableObject
 {
     public string drinkName;
-    public DrinkCategory category;
+    public ItemCategory category;
     public RecipeIngredient[] ingredients;  // what you need to make it
     public float craftTime = 3f;
     public float price = 5.50f;
