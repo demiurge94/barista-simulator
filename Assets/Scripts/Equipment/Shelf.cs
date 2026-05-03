@@ -7,6 +7,8 @@ public class Shelf : MonoBehaviour
 
     void Start()
     {
-        Instantiate(item, itemPoint.position, itemPoint.rotation);
+        GameObject temp = Instantiate(item, itemPoint.position, itemPoint.rotation);
+        temp.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        temp.transform.SetParent(itemPoint);
     }
 }
