@@ -32,6 +32,10 @@ Manual shelf positioning in the level scene is the user's responsibility — out
 | Stack limits / inventory cap | out |
 | Drag-and-drop / slot reassignment | out |
 
+## Espresso icon — sprite 3
+
+Update from prior work: `Espresso_Placeholder.asset` should be assigned **sprite 3** from `Barista_Icons.png` (the small white espresso cup). It was left iconless in yesterday's pass; assign it before/during slot UI rework so slot 9 (Espresso) renders correctly.
+
 ## Visual layout
 
 Each slot is the existing 64×64 `Image` (or whatever its current size). On top of that frame:

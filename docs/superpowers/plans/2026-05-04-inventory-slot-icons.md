@@ -532,6 +532,31 @@ UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
 return sb.ToString();
 ```
 
+- [ ] **Step 1.5: Assign sprite 3 to Espresso ingredient asset**
+
+```
+mcp__unity-mcp__execute_code action="execute" code=<below>
+```
+
+```csharp
+const string atlasPath = "Assets/Sprites/Icons/Barista_Icons.png";
+var espresso = UnityEditor.AssetDatabase.LoadAssetAtPath<IngredientData>(
+    "Assets/Ingredients/Espresso_Placeholder.asset");
+if (espresso == null) return "Espresso asset NOT FOUND";
+
+UnityEngine.Sprite found = null;
+foreach (var a in UnityEditor.AssetDatabase.LoadAllAssetsAtPath(atlasPath))
+    if (a is UnityEngine.Sprite s && s.name == "Barista_Icons_3") { found = s; break; }
+if (found == null) return "Barista_Icons_3 NOT FOUND";
+
+espresso.icon = found;
+UnityEditor.EditorUtility.SetDirty(espresso);
+UnityEditor.AssetDatabase.SaveAssets();
+return $"Espresso.icon = {found.name}";
+```
+
+Expected: `Espresso.icon = Barista_Icons_3`.
+
 - [ ] **Step 2: Assign Espresso to slot 9**
 
 ```

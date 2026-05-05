@@ -16,7 +16,7 @@
 | Donut | yes (sprite 0) | raw, on shelf, **no recipe yet** |
 | Orange | yes (sprite 4) | raw, on shelf, **no recipe yet** |
 | Milk | yes (sprite 10) | raw, on shelf, **no recipe yet** |
-| Espresso | no icon | **crafting output**, not on a shelf — produced by crafting Espresso recipe |
+| Espresso | yes (sprite 3) | **crafting output**, not on a shelf — produced by crafting Espresso recipe |
 
 ## Recipes (5 working)
 
