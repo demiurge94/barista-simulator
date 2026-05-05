@@ -161,6 +161,30 @@ These are scene tweaks the user will do by hand in the Editor before/after the c
 - [ ] Sanity-check the visual item on each shelf doesn't clip through walls/furniture.
 - [ ] Optionally rename shelf GameObjects (e.g. `Shelf (CoffeeBeans)` → `Bean Shelf`) for hierarchy readability.
 
+## Bug to investigate first (blocker)
+
+**Observed:** After today's work, only the **Sugar** and **Milk** shelves successfully add to inventory on E-press. The other 7 shelves (Banana, Orange, CoffeeBeans, Caramel, Cupcake, Donut, Poptart) appear to do nothing.
+
+**What's different about Sugar and Milk:** Their visuals are placeholder primitive cubes — Unity's primitive cube spawns with a `BoxCollider` attached by default. The other 7 shelves use item prefabs that have **no collider** on the visual.
+
+**Hypothesis:** The shelf's `Trigger` child collider (`IsTrigger=1`, local pos `(0, 0.572, 0.869)`, size `(1, 1, 0.5)`) is supposed to be what `PlayerInteract`'s raycast hits. For Sugar/Milk, the visual cube's collider also catches the raycast and `GetComponentInParent<IInteractable>()` walks up to Shelf — so they work even if the trigger doesn't. For the other 7, only the trigger should catch it, but apparently it doesn't.
+
+**Possible root causes to check:**
+1. The Trigger child collider got detached/disabled on the 7 new shelves during prefab instantiation. → Inspect each shelf's `Trigger` child via MCP: collider component present? `enabled=true`? `isTrigger=true`?
+2. Rotation issue — the 7 new shelves might be rotated such that the trigger is pointing away from the player's approach direction. → Verify each shelf's `transform.rotation == Quaternion.identity` (it should be, post-row-spread).
+3. The visual item is large and parented in such a way that it physically blocks raycasts to the trigger (e.g. extends 1m+ forward into where the player stands). → Check world bounds of each instantiated visual.
+4. `Physics.queriesHitTriggers` is `true` (verified in pre-flight), but maybe a layer / `Physics.IgnoreLayerCollision` setting is filtering trigger hits.
+5. The 7 visual prefabs (CoffeeBeans, Caramel, etc.) DO have a collider after all — but it's set to a layer that the raycast skips, or it has `IsTrigger=true` but the parent walk fails.
+
+**Fix approach:** Once root cause is found, the cleanest fix is to ensure the shelf's own Trigger collider is the reliable interaction target. Options:
+- A. Replace the Trigger child's `IsTrigger=true` BoxCollider with a regular (non-trigger) collider sized to the shelf's front-facing volume. Raycasts hit it directly regardless of the visual.
+- B. Add a non-trigger collider component to each shelf root that's sized appropriately.
+- C. Leave the Trigger as-is and add a fallback: ensure each visual has a collider so the parent-walk always works (this is what Sugar/Milk are accidentally doing).
+
+Recommendation: **A** (fix the prefab once, all 9 shelves benefit).
+
+**Where in the plan:** Investigate before Task 1 (cube shrink). Add a Task 0 to the plan if needed. May reduce scope of Task 1 — if we add colliders to all visuals as a fallback, Sugar/Milk's tiny cubes still need the collider scaled correctly.
+
 ## Out of scope
 
 - Stack limits / inventory cap.

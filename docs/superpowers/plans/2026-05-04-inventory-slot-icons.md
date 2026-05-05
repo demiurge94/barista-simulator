@@ -79,6 +79,104 @@ mcp__unity-mcp__manage_scene action="get_loaded_scenes"
 
 ---
 
+## Task 0: BLOCKER — diagnose & fix shelf interaction (only Sugar/Milk work today)
+
+**Symptom:** Only Sugar + Milk shelves add to inventory on E-press; the other 7 do nothing. See spec §"Bug to investigate first" for hypothesis.
+
+**Files:**
+- Likely: `Assets/PreFabs/Equipment/Shelf.prefab` (collider fix)
+- Maybe: `Assets/Scripts/Equipment/Shelf.cs` (no-op fallback)
+
+- [ ] **Step 1: Inspect each shelf's `Trigger` child via MCP**
+
+```
+mcp__unity-mcp__execute_code action="execute" code=<below>
+```
+
+```csharp
+var allShelves = UnityEngine.Object.FindObjectsByType<Shelf>(
+    UnityEngine.FindObjectsInactive.Include, UnityEngine.FindObjectsSortMode.None);
+var sb = new System.Text.StringBuilder();
+foreach (var s in allShelves)
+{
+    var trig = s.transform.Find("Trigger");
+    if (trig == null) { sb.AppendLine($"{s.gameObject.name}: NO Trigger child"); continue; }
+    var col = trig.GetComponent<UnityEngine.Collider>();
+    if (col == null) { sb.AppendLine($"{s.gameObject.name}/Trigger: NO collider"); continue; }
+    sb.AppendLine($"{s.gameObject.name}/Trigger: type={col.GetType().Name} enabled={col.enabled} isTrigger={col.isTrigger} layer={trig.gameObject.layer} worldPos={trig.position} bounds={col.bounds}");
+}
+return sb.ToString();
+```
+
+Look for differences between Sugar/Milk shelves (working) and the other 7 (not working).
+
+- [ ] **Step 2: Check whether the visual items have colliders**
+
+```
+mcp__unity-mcp__execute_code action="execute" code=<below>
+```
+
+```csharp
+string[] items = { "Banana", "Caramel", "CoffeeBeans", "Cupcake", "Donut", "Orange", "Poptart", "Sugar", "Milk" };
+var sb = new System.Text.StringBuilder();
+foreach (var n in items)
+{
+    var prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.GameObject>($"Assets/PreFabs/Items/{n}.prefab");
+    if (prefab == null) { sb.AppendLine($"{n}: NOT FOUND"); continue; }
+    var cols = prefab.GetComponentsInChildren<UnityEngine.Collider>(true);
+    sb.AppendLine($"{n}: {cols.Length} collider(s)");
+    foreach (var c in cols)
+        sb.AppendLine($"  - {c.GetType().Name} on '{c.gameObject.name}' isTrigger={c.isTrigger}");
+}
+return sb.ToString();
+```
+
+Expected hypothesis: Sugar/Milk have a `BoxCollider` (Unity primitive cube default), the others have 0 colliders.
+
+- [ ] **Step 3: Apply the fix**
+
+Recommended: convert the shelf's `Trigger` child collider from `IsTrigger=true` to a regular non-trigger collider so raycasts hit it reliably regardless of project Physics settings or visuals.
+
+```
+mcp__unity-mcp__execute_code action="execute" code=<below>
+```
+
+```csharp
+string path = "Assets/PreFabs/Equipment/Shelf.prefab";
+var root = UnityEditor.PrefabUtility.LoadPrefabContents(path);
+if (root == null) return "shelf prefab not found";
+var trig = root.transform.Find("Trigger");
+if (trig == null) { UnityEditor.PrefabUtility.UnloadPrefabContents(root); return "no Trigger child"; }
+var col = trig.GetComponent<UnityEngine.Collider>();
+if (col == null) { UnityEditor.PrefabUtility.UnloadPrefabContents(root); return "no collider on Trigger"; }
+col.isTrigger = false;
+UnityEditor.PrefabUtility.SaveAsPrefabAsset(root, path);
+UnityEditor.PrefabUtility.UnloadPrefabContents(root);
+return "Trigger.isTrigger = false on Shelf prefab";
+```
+
+This change propagates to all shelf instances in the scene because they're prefab instances.
+
+- [ ] **Step 4: Quick play-mode test — all 9 shelves restock**
+
+User enters Play mode, walks to each of the 9 shelves, presses E. Confirm each one adds to inventory (look at console for `[Shelf] +5 X` log lines).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git -C /Users/erick/barista-simulator add Assets/PreFabs/Equipment/Shelf.prefab
+git -C /Users/erick/barista-simulator commit -m "fix(shelf): non-trigger collider so raycast reliably hits all shelves"
+```
+
+If the fix doesn't work after Step 3, fall back to one of:
+- Adjust trigger size/position so it's reliably in front of every shelf
+- Add a collider to each visual item prefab (Banana, Caramel, etc.)
+- Change `Shelf.cs` to add a runtime collider in `Start()` if missing
+
+Decide based on what Step 1 reveals.
+
+---
+
 ## Task 1: Shrink Sugar + Milk placeholder cubes
 
 The current cubes render as ~1.5m blocks because `Shelf.Start()` hard-sets `localScale = 1.5` on the instantiated visual. We work around this by adding a child Transform inside each prefab that scales the mesh down — Shelf's 1.5× then multiplies against the child's 0.2 baked scale, giving a final ~0.3m visual.
