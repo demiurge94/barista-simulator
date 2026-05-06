@@ -4,13 +4,13 @@ public class Chain : MonoBehaviour
 {
 
     public Link[] links;
-    public Transform counterPosition;
+    public Transform counterTransform;
 
     public int remaining = 6;
 
     void Start()
     {
-        SetPositions();
+        //SetPositions();
         //PrintPositions();
 
         // First Node Goes To Counter
@@ -59,7 +59,7 @@ public class Chain : MonoBehaviour
 
     public void MoveRemainingHeadToCounter()
     {
-        links[links.Length - 1 - (links.Length - remaining)].transform.position = counterPosition.position;
+        links[links.Length - 1 - (links.Length - remaining)].MoveToCounter(counterTransform.position);
     }
 
     void UpdateTail()
@@ -67,17 +67,6 @@ public class Chain : MonoBehaviour
         for(int i = 0; i < links.Length - (links.Length - remaining); i++)
         {
             links[i].MoveToNext();
-        }
-    }
-
-    public void SetPositions()
-    {
-        for(int i = 0; i < links.Length - (links.Length - remaining); i++)
-        {
-            if(i + 1 < links.Length)
-            {
-                links[i].nextPosition = links[i + 1].currentPosition.position;
-            }
         }
     }
 }
