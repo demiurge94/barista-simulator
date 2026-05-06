@@ -1,18 +1,22 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
-/// One per hotbar slot Image. Renders ingredient name + count via a child TMP_Text.
-/// Refreshes whenever PlayerInventory changes; pops the slot when count goes up.
+/// One per hotbar slot. Renders the ingredient's icon sprite plus a count badge in
+/// the bottom-right. Both hide when count is 0; both pop when count increases.
 /// </summary>
 public class IngredientSlot : MonoBehaviour
 {
     [Tooltip("Which ingredient this slot represents. Leave null for an empty slot.")]
     public IngredientData ingredient;
 
-    [Tooltip("Child TMP_Text used to render the slot label. Auto-found in children if left null.")]
-    public TMP_Text label;
+    [Tooltip("Image showing the ingredient sprite. Auto-found on a child named 'Icon' if null.")]
+    public Image iconImage;
+
+    [Tooltip("TMP_Text for the count badge in the bottom-right. Auto-found on a child named 'CountLabel' if null.")]
+    public TMP_Text countLabel;
 
     [Tooltip("Pop scale on a count increase.")]
     public float popScale = 1.3f;
@@ -25,7 +29,16 @@ public class IngredientSlot : MonoBehaviour
 
     void Awake()
     {
-        if (label == null) label = GetComponentInChildren<TMP_Text>(true);
+        if (iconImage == null)
+        {
+            var t = transform.Find("Icon");
+            if (t != null) iconImage = t.GetComponent<Image>();
+        }
+        if (countLabel == null)
+        {
+            var t = transform.Find("CountLabel");
+            if (t != null) countLabel = t.GetComponent<TMP_Text>();
+        }
     }
 
     void OnEnable()
@@ -53,27 +66,38 @@ public class IngredientSlot : MonoBehaviour
 
     void Refresh()
     {
-        if (label == null) return;
-
         if (ingredient == null)
         {
-            label.text = "";
+            SetVisible(false);
             _lastCount = -1;
             return;
         }
 
         int count = PlayerInventory.Instance != null
-            ? PlayerInventory.Instance.Get(ingredient)
-            : 0;
+            ? PlayerInventory.Instance.Get(ingredient) : 0;
 
-        if (_lastCount >= 0 && count > _lastCount)
-            PopOnce();
+        if (_lastCount >= 0 && count > _lastCount) PopOnce();
         _lastCount = count;
 
-        string n = string.IsNullOrEmpty(ingredient.ingredientName)
-            ? ingredient.name
-            : ingredient.ingredientName.Split(' ')[0];
-        label.text = $"{n} {count}";
+        if (count <= 0)
+        {
+            SetVisible(false);
+            return;
+        }
+
+        SetVisible(true);
+        if (iconImage != null)
+        {
+            iconImage.sprite = ingredient.icon;
+            iconImage.enabled = ingredient.icon != null;
+        }
+        if (countLabel != null) countLabel.text = count.ToString();
+    }
+
+    void SetVisible(bool on)
+    {
+        if (iconImage != null) iconImage.gameObject.SetActive(on);
+        if (countLabel != null) countLabel.gameObject.SetActive(on);
     }
 
     void PopOnce()
