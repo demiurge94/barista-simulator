@@ -48,7 +48,8 @@ public class Chain : MonoBehaviour
     {
         for(int i = links.Length - 2 - (links.Length - remaining); i >= 0; i--)
         {
-            links[i].nextPosition = links[i + 1].currentPosition.position;
+            links[i].nextPosition = links[i + 1].currentTransform.position;
+            links[i].nextRotation = links[i + 1].currentTransform.rotation;
         }
     }
 
@@ -59,7 +60,7 @@ public class Chain : MonoBehaviour
 
     public void MoveRemainingHeadToCounter()
     {
-        links[links.Length - 1 - (links.Length - remaining)].MoveToCounter(counterTransform.position);
+        links[links.Length - 1 - (links.Length - remaining)].MoveToCounter(counterTransform);
     }
 
     void UpdateTail()

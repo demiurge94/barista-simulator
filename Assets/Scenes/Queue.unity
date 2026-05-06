@@ -345,8 +345,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946101e96eaeda7439d70556bbdd5ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Link
-  currentPosition: {fileID: 0}
+  currentTransform: {fileID: 0}
   nextPosition: {x: 0, y: 0, z: 0}
+  nextRotation: {x: 0, y: 0, z: 0, w: 0}
   customer: {fileID: 1971406597}
 --- !u!65 &320955507
 BoxCollider:
@@ -434,14 +435,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 320955505}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.1923588, z: -0, w: 0.9813247}
   m_LocalPosition: {x: 15.45, y: -0, z: 7.26275}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1971406598}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -22.181, z: 0}
 --- !u!1 &378166018
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,8 +587,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946101e96eaeda7439d70556bbdd5ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Link
-  currentPosition: {fileID: 0}
+  currentTransform: {fileID: 0}
   nextPosition: {x: 0, y: 0, z: 0}
+  nextRotation: {x: 0, y: 0, z: 0, w: 0}
   customer: {fileID: 1003051449}
 --- !u!65 &444711831
 BoxCollider:
@@ -715,8 +717,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946101e96eaeda7439d70556bbdd5ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Link
-  currentPosition: {fileID: 0}
+  currentTransform: {fileID: 0}
   nextPosition: {x: 0, y: 0, z: 0}
+  nextRotation: {x: 0, y: 0, z: 0, w: 0}
   customer: {fileID: 52210415}
 --- !u!65 &476574713
 BoxCollider:
@@ -804,14 +807,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476574711}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.27772504, z: -0, w: 0.9606606}
   m_LocalPosition: {x: 16.73, y: -0, z: 7.26275}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 52210416}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -32.249, z: 0}
 --- !u!1001 &560360407
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1033,8 +1036,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946101e96eaeda7439d70556bbdd5ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Link
-  currentPosition: {fileID: 0}
+  currentTransform: {fileID: 0}
   nextPosition: {x: 0, y: 0, z: 0}
+  nextRotation: {x: 0, y: 0, z: 0, w: 0}
   customer: {fileID: 1579200113}
 --- !u!65 &1258796782
 BoxCollider:
@@ -1122,14 +1126,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258796780}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.24319153, z: -0, w: 0.96997833}
   m_LocalPosition: {x: 19.56, y: -0, z: 7.26275}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1579200114}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -28.15, z: 0}
 --- !u!1 &1336716589
 GameObject:
   m_ObjectHideFlags: 0
@@ -1299,8 +1303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946101e96eaeda7439d70556bbdd5ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Link
-  currentPosition: {fileID: 0}
+  currentTransform: {fileID: 0}
   nextPosition: {x: 0, y: 0, z: 0}
+  nextRotation: {x: 0, y: 0, z: 0, w: 0}
   customer: {fileID: 0}
 --- !u!65 &1373788443
 BoxCollider:
@@ -1427,8 +1432,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946101e96eaeda7439d70556bbdd5ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Link
-  currentPosition: {fileID: 0}
+  currentTransform: {fileID: 0}
   nextPosition: {x: 0, y: 0, z: 0}
+  nextRotation: {x: 0, y: 0, z: 0, w: 0}
   customer: {fileID: 560360408}
 --- !u!65 &1402814739
 BoxCollider:
@@ -1623,8 +1629,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946101e96eaeda7439d70556bbdd5ed8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Link
-  currentPosition: {fileID: 0}
+  currentTransform: {fileID: 0}
   nextPosition: {x: 0, y: 0, z: 0}
+  nextRotation: {x: 0, y: 0, z: 0, w: 0}
   customer: {fileID: 1648194713}
 --- !u!65 &1594772469
 BoxCollider:
@@ -1712,14 +1719,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594772467}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.17162707, z: -0, w: 0.98516196}
   m_LocalPosition: {x: 18.15, y: -0, z: 7.26275}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1648194714}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -19.765, z: 0}
 --- !u!1001 &1648194712
 PrefabInstance:
   m_ObjectHideFlags: 0
