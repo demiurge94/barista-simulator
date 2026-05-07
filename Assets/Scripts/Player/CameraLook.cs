@@ -8,12 +8,6 @@ public class CameraLook : MonoBehaviour
 
     float _xRotation;
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
     void Update()
     {
         float mouseX = Mouse.current.delta.ReadValue().x * mouseSensitivity * Time.deltaTime;

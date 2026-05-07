@@ -26,7 +26,7 @@ public class Link : MonoBehaviour
     {
         if (customer != null)
         {
-            StartCoroutine(MoveToPoint(counterTransform.position, counterTransform.rotation, 1.0f));
+            StartCoroutine(MoveToPoint(counterTransform.position, counterTransform.rotation, 3.0f));
         }
     }
 

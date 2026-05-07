@@ -6,7 +6,7 @@ public class Chain : MonoBehaviour
     public Link[] links;
     public Transform counterTransform;
 
-    public int remaining = 6;
+    public int remaining = 8;
 
     void Start()
     {

@@ -2,76 +2,33 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour
 {
-    public CustomerPath path;
+    public int customerTexture = 1;
+    public GameObject model;
+    public string customer_name;
 
-    public float moveSpeedOverride = 0.0f;
-    int myIndex => path.customers.IndexOf(this);
+    public Material[] customerMaterials = new Material[4];
 
-    int targetPoint = 0;
-
-    void OnEnable()
+    void Start()
     {
-        path?.Register(this);
-        SnapToQueuePosition();
-    }
+        int number = Random.Range(1, 5);
+        Renderer modelRenderer = model.GetComponent<Renderer>();
 
-    void OnDisable()
-    {
-        path?.Unregister(this);
-    }
+        modelRenderer.material = customerMaterials[number - 1];
 
-    void SnapToQueuePosition()
-    {
-        if (path == null)
+        switch (number)
         {
-            return;
-        }
-
-        transform.position = path.GetTargetPositionForCustomer(myIndex);
-    }
-
-    void Update()
-    {
-        if (path == null || path.PointCount == 0) return;
-
-        if (myIndex == 0)
-        {
-            Vector3 target = path.GetPoint(targetPoint);
-            MoveTowards(target);
-
-            if(Vector3.Distance(transform.position, target) < 0.1f)
-            {
-                targetPoint = Mathf.Min(targetPoint + 1, path.PointCount - 1);
-            }
-        }
-        else
-        {
-            Vector3 slot = path.GetTargetPositionForCustomer(myIndex);
-            MoveTowards(slot);
-        }
-
-        Vector3 vel = (GetVelocityApprox());
-
-        if (vel.sqrMagnitude > 0.0001f) {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(vel), 10.0f * Time.deltaTime);
+            case 1:
+                customer_name = "Jessica";
+                break;
+            case 2:
+                customer_name = "Mark";
+                break;
+            case 3:
+                customer_name = "Morning Zombie";
+                break;
+            case 4:
+                customer_name = "Morning Zombie";
+                break;
         }
     }
-
-    void MoveTowards(Vector3 target)
-    {
-        float spd = moveSpeedOverride > 0f ? moveSpeedOverride : path.moveSpeed;
-        transform.position = Vector3.MoveTowards(transform.position, target, spd * Time.deltaTime);
-    }
-
-
-    Vector3 lastPos;
-
-    Vector3 GetVelocityApprox()
-    {
-        Vector3 v = (transform.position - lastPos) / Time.deltaTime;
-        lastPos = transform.position;
-        return v;
-    }
-
-
 }
