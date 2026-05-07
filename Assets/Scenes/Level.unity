@@ -313,7 +313,7 @@ Transform:
   m_GameObject: {fileID: 54220847}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000016391276}
-  m_LocalPosition: {x: 13.44, y: 0.29, z: 24.2}
+  m_LocalPosition: {x: 9.29, y: 0.29, z: 24.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3777,7 +3777,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101968872733061020, guid: 96620c16df7ebbd42904ae7813e7bfa4, type: 3}
       propertyPath: m_Name
-      value: Shelf (1)
+      value: Shelf (Orange)
       objectReference: {fileID: 0}
     - target: {fileID: 467561847757166617, guid: 96620c16df7ebbd42904ae7813e7bfa4, type: 3}
       propertyPath: item
@@ -7077,7 +7077,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.48
+      value: 7.7
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7085,11 +7085,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.42
+      value: 28.46
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.061056625
+      value: -0.16992478
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalRotation.x
@@ -7097,7 +7097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9981343
+      value: -0.98545706
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalRotation.z
@@ -7109,7 +7109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -187.001
+      value: -199.567
       objectReference: {fileID: 0}
     - target: {fileID: 840888066036022308, guid: eb2a02b762b011d4f95b9bf9799ffa01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -11430,7 +11430,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101968872733061020, guid: 96620c16df7ebbd42904ae7813e7bfa4, type: 3}
       propertyPath: m_Name
-      value: Shelf
+      value: Shelf (Banana)
       objectReference: {fileID: 0}
     - target: {fileID: 467561847757166617, guid: 96620c16df7ebbd42904ae7813e7bfa4, type: 3}
       propertyPath: item
