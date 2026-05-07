@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Chain : MonoBehaviour
 {
-
     public Link[] links;
     public Transform counterTransform;
+    public Transform exitPointTransform;
 
     public int remaining = 8;
 
     void Start()
     {
+        MoveRemainingHeadToCounter();
         //SetPositions();
         //PrintPositions();
 
@@ -21,28 +22,11 @@ public class Chain : MonoBehaviour
 
         // The Rest of Tail Moves + 1 position
         // The Cycle Repeats
-
     }
 
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.W))
-        {
-            SetBackTrackPositions();
-            MoveRemainingHeadToCounter();
-            remaining = remaining - 1;
-        }
-
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            MoveRemainingHeadNodeToExit();
-        }
-
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            UpdateTail();
-        }
-    }
+    // When customer is served the current customer moves to exit
+    // Tail Is updated
+    // New Customer is moves to counter
 
     public void SetBackTrackPositions()
     {
@@ -55,12 +39,14 @@ public class Chain : MonoBehaviour
 
     public void MoveRemainingHeadNodeToExit()
     {
-        links[links.Length - (links.Length - remaining)].MoveToExitPoint();
+        links[links.Length - (links.Length - remaining)].MoveToExitPoint(exitPointTransform);
     }
 
     public void MoveRemainingHeadToCounter()
     {
+        SetBackTrackPositions();
         links[links.Length - 1 - (links.Length - remaining)].MoveToCounter(counterTransform);
+        remaining = remaining - 1;
     }
 
     void UpdateTail()

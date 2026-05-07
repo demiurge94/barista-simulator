@@ -30,9 +30,9 @@ public class Link : MonoBehaviour
         }
     }
 
-    public void MoveToExitPoint()
+    public void MoveToExitPoint(Transform exitPointTransform)
     {
-        this.transform.position = new Vector3(10.0f, 2.0f, 8.0f);
+        StartCoroutine(MoveToPoint(exitPointTransform.position, exitPointTransform.rotation, 12.0f));
     }
 
     IEnumerator MoveToPoint(Vector3 target, Quaternion targetRotation, float duration)
@@ -48,7 +48,7 @@ public class Link : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             this.transform.position = Vector3.Lerp(start, target, Mathf.Clamp01(elapsed / duration));
-            this.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(elapsed / duration));
+            this.transform.rotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.Clamp01(elapsed / 1.0f));
             yield return null;
         }
 
