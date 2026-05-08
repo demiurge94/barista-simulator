@@ -10,7 +10,7 @@ public class Chain : MonoBehaviour
 
     void Start()
     {
-        MoveRemainingHeadToCounter();
+        //MoveRemainingHeadToCounter();
         //SetPositions();
         //PrintPositions();
 
@@ -44,12 +44,10 @@ public class Chain : MonoBehaviour
 
     public void MoveRemainingHeadToCounter()
     {
-        SetBackTrackPositions();
         links[links.Length - 1 - (links.Length - remaining)].MoveToCounter(counterTransform);
-        remaining = remaining - 1;
     }
 
-    void UpdateTail()
+    public void UpdateTail()
     {
         for(int i = 0; i < links.Length - (links.Length - remaining); i++)
         {
