@@ -18,6 +18,9 @@ public class PlayerInventory : MonoBehaviour
 
     public event Action OnChanged;
 
+    /// <summary>Fires when an ingredient transitions from count 0 (or never seen) to >0. Used by HotbarManager to assign a slot on first acquisition.</summary>
+    public event Action<IngredientData> OnAddedNew;
+
     readonly Dictionary<IngredientData, int> _counts = new();
 
     void Awake()
@@ -51,7 +54,9 @@ public class PlayerInventory : MonoBehaviour
     public void Add(IngredientData ing, int qty)
     {
         if (ing == null || qty <= 0) return;
-        _counts[ing] = Get(ing) + qty;
+        int prev = Get(ing);
+        _counts[ing] = prev + qty;
+        if (prev == 0) OnAddedNew?.Invoke(ing);
         OnChanged?.Invoke();
     }
 

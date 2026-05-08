@@ -15,7 +15,7 @@ public class Order
 public class OrderManager : MonoBehaviour
 {
     [Header("Order pool")]
-    [Tooltip("Recipes that can spawn as orders. Phase 1: assign the 4 coffee recipes. Phase 3 will add Toasted Poptart.")]
+    [Tooltip("Recipes that can spawn as orders. Append new recipes here so they enter the pool.")]
     public DrinkRecipe[] availableRecipes;
 
     [Header("UI")]
@@ -24,8 +24,6 @@ public class OrderManager : MonoBehaviour
     public int startingOrders = 3;
 
     [Header("Wiring")]
-    [Tooltip("FabricatorMenu to subscribe to for OnDrinkCrafted. Drag the Canvas's FabricatorMenu here.")]
-    public FabricatorMenu fabricatorMenu;
     [Tooltip("ProgressUI to call ServeCustomer on. Drag the Canvas's ProgressUI here.")]
     public ProgressUI progressUI;
 
@@ -40,17 +38,33 @@ public class OrderManager : MonoBehaviour
 
     void Start()
     {
-        if (fabricatorMenu != null)
-            fabricatorMenu.OnDrinkCrafted += HandleDrinkCrafted;
-
         for (int i = 0; i < startingOrders; i++)
             AddRandomOrder();
     }
 
-    void OnDestroy()
+    /// <summary>
+    /// Public hook for the trigger-box / delivery system to fulfill an order.
+    /// Consumes 1 of order.recipe.output from PlayerInventory if available.
+    /// Returns true on success.
+    /// </summary>
+    public bool TryFulfill(int orderId)
     {
-        if (fabricatorMenu != null)
-            fabricatorMenu.OnDrinkCrafted -= HandleDrinkCrafted;
+        if (PlayerInventory.Instance == null) return false;
+        for (int i = 0; i < _orders.Count; i++)
+        {
+            var o = _orders[i];
+            if (o.id != orderId || o.fulfilled) continue;
+            if (o.recipe == null || o.recipe.output == null) return false;
+            if (PlayerInventory.Instance.Get(o.recipe.output) < 1) return false;
+
+            PlayerInventory.Instance.Consume(new[] {
+                new RecipeIngredient { ingredient = o.recipe.output, quantity = 1 }
+            });
+            o.fulfilled = true;
+            StartCoroutine(FulfillCoroutine(o));
+            return true;
+        }
+        return false;
     }
 
     public void AddRandomOrder()
@@ -61,9 +75,7 @@ public class OrderManager : MonoBehaviour
             return;
         }
         var recipe = availableRecipes[Random.Range(0, availableRecipes.Length)];
-        int sweetness = (recipe.category == ItemCategory.Food)
-            ? 0
-            : Random.Range(0, 4); // 0..3
+        int sweetness = (recipe.category == ItemCategory.Food) ? 0 : Random.Range(0, 4);
         AddOrder(recipe, sweetness);
     }
 
@@ -78,28 +90,6 @@ public class OrderManager : MonoBehaviour
         };
         _orders.Add(order);
         BuildOrderRow(order);
-    }
-
-    void HandleDrinkCrafted(DrinkRecipe recipe, int sweetness)
-    {
-        Order match = null;
-        foreach (var o in _orders)
-        {
-            if (!o.fulfilled && o.recipe == recipe && o.sweetness == sweetness)
-            {
-                match = o;
-                break;
-            }
-        }
-
-        if (match == null)
-        {
-            Debug.Log($"[Orders] No matching order for {recipe.drinkName} (sweetness {sweetness})");
-            return;
-        }
-
-        match.fulfilled = true;
-        StartCoroutine(FulfillCoroutine(match));
     }
 
     IEnumerator FulfillCoroutine(Order order)
