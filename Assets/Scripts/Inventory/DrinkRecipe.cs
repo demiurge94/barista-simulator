@@ -26,5 +26,8 @@ public class DrinkRecipe : ScriptableObject
     [Tooltip("Optional: when set, crafting this drink also adds 1 of this ingredient to inventory. Used by Espresso → Latte/Cortado chain.")]
     public IngredientData output;
 
+    [Tooltip("3D prefab to spawn at the customer's hand when this order is delivered. Used by the trigger-box drop-off system.")]
+    public GameObject itemPrefab;
+
     [TextArea] public string description;
 }
