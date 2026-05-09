@@ -890,3 +890,4 @@ sequenceDiagram
 - Project repository — `demiurge94/barista-simulator` on GitHub
 - Customer Character from Kenney.nl - https://kenney.nl/assets/animated-characters-retro
 - Game Music from opengameart.org by Cleyton Kauffman - https://opengameart.org/content/shop-theme
+- Game Icons from kenney.nl - https://kenney.nl/assets/ui-pack
