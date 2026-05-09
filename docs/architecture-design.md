@@ -887,6 +887,5 @@ sequenceDiagram
 - Unity Engine documentation — https://docs.unity3d.com/
 - Unity ScriptableObject pattern (CreateAssetMenu) — https://docs.unity3d.com/ScriptReference/CreateAssetMenuAttribute.html
 - Subnautica Fabricator UI (visual inspiration for the crafting menu)
-- Customer NPC chain pattern (linked-list snake queue) — initial implementation by Alex Max
-- COMP course information — provided in lecture materials
 - Project repository — `demiurge94/barista-simulator` on GitHub
+- Customer Character from Kenney.nl - https://kenney.nl/assets/animated-characters-retro
