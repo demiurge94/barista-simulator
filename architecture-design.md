@@ -887,7 +887,6 @@ sequenceDiagram
 - Unity Engine documentation — https://docs.unity3d.com/
 - Unity ScriptableObject pattern (CreateAssetMenu) — https://docs.unity3d.com/ScriptReference/CreateAssetMenuAttribute.html
 - Subnautica Fabricator UI (visual inspiration for the crafting menu)
-- Project repository — `demiurge94/barista-simulator` on GitHub
 - Customer Character from Kenney.nl - https://kenney.nl/assets/animated-characters-retro
 - Game Music from opengameart.org by Cleyton Kauffman - https://opengameart.org/content/shop-theme
 - Game Icons from kenney.nl - https://kenney.nl/assets/ui-pack
